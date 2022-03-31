@@ -1,15 +1,11 @@
 package com.pixplaze.keyword;
 
-import com.pixplaze.exceptions.NoTranslationSpecifiedException;
+import com.pixplaze.exceptions.LanguageNotSupportedException;
 import com.pixplaze.exceptions.parsing.ParsingError;
-import com.pixplaze.parser.TranslationParser;
 import com.pixplaze.parser.YamlParser;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -32,7 +28,7 @@ public class DefaultDictionary implements Dictionary {
                 try {
                     yml.load(file);
                     set.add(parser.parse(yml));
-                } catch (IOException | InvalidConfigurationException e) {
+                } catch (Exception e) {
                     throw new ParsingError();
                 }
             }
@@ -41,11 +37,11 @@ public class DefaultDictionary implements Dictionary {
     }
 
     @Override
-    public String get(Locale locale, String keyword) throws NoTranslationSpecifiedException {
+    public String get(Locale locale, String keyword) throws LanguageNotSupportedException {
         for (var dict: this.translations) {
             if (dict.locale().equals(locale))
                 return dict.get(keyword);
         }
-        throw new NoTranslationSpecifiedException(locale);
+        throw new LanguageNotSupportedException(locale);
     }
 }

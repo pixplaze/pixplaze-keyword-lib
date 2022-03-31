@@ -1,6 +1,6 @@
 package com.pixplaze.exceptions.parsing;
 
-public class ParsingError extends Exception {
+public class ParsingError extends Error {
     public ParsingError(String message) {
         super(message);
     }
