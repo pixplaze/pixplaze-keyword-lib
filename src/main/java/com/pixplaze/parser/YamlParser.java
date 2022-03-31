@@ -4,6 +4,7 @@ import com.pixplaze.exceptions.parsing.KeywordsNotSpecifiedException;
 import com.pixplaze.exceptions.parsing.LanguageNotSpecifiedException;
 import com.pixplaze.exceptions.parsing.TranslationNotSpecifiedException;
 import com.pixplaze.keyword.DefaultTranslation;
+import com.pixplaze.keyword.PixplazeKeywordLib;
 import com.pixplaze.keyword.Translation;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -32,9 +33,9 @@ public class YamlParser implements TranslationParser<FileConfiguration> {
         var map = keywords.getValues(true);
 
         map.remove(language);
-        return new DefaultTranslation(
-                locale,
-                map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> (String) e.getValue()))
+        var lang = map.entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, e -> (String) e.getValue())
         );
+        return new DefaultTranslation(locale, lang);
     }
 }

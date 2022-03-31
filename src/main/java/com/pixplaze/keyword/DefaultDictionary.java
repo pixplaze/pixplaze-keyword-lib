@@ -1,6 +1,7 @@
 package com.pixplaze.keyword;
 
 import com.pixplaze.exceptions.NoTranslationSpecifiedException;
+import com.pixplaze.exceptions.parsing.ParsingError;
 import com.pixplaze.parser.TranslationParser;
 import com.pixplaze.parser.YamlParser;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -20,7 +21,7 @@ public class DefaultDictionary implements Dictionary {
         this.translations = translations;
     }
 
-    public DefaultDictionary(YamlParser parser, File dir) {
+    public DefaultDictionary(YamlParser parser, File dir) throws ParsingError {
         var set = new HashSet<Translation>();
         if (dir != null && dir.isDirectory()) {
             var files = dir.listFiles(file -> file.getName().endsWith(".yml")); // ??
@@ -32,7 +33,7 @@ public class DefaultDictionary implements Dictionary {
                     yml.load(file);
                     set.add(parser.parse(yml));
                 } catch (IOException | InvalidConfigurationException e) {
-                    e.printStackTrace();
+                    throw new ParsingError();
                 }
             }
         }

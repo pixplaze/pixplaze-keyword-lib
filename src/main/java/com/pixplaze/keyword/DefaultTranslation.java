@@ -22,4 +22,6 @@ public class DefaultTranslation implements Translation {
     public String get(String keyword) {
         return this.translation.get(keyword);
     }
+
+
 }
