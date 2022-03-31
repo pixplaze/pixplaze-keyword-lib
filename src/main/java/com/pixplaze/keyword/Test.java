@@ -1,8 +1,18 @@
 package com.pixplaze.keyword;
 
+import com.pixplaze.parser.TranslationParser;
+import com.pixplaze.parser.YamlParser;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.YamlConstructor;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Test {
     public static String test() {
@@ -10,20 +20,9 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        var ruMap = new HashMap<String, String>();
-        ruMap.put("error_message", "Ошибка!");
-        ruMap.put("warning_message", "Предупреждение...");
-        ruMap.put("success_message", "Успех!");
 
-        var ruTranslation = new DefaultTranslation(Locale.forLanguageTag("ru-RU"), ruMap);
 
-        var set = new HashSet<Translation>();
-        set.add(ruTranslation);
-
-        var dict = new DefaultDictionary(set);
-
-        System.out.println(Locale.forLanguageTag("ru-RU").getDisplayName(Locale.US));
-        // System.out.println(dict.get(Locale.forLanguageTag("ru-RU"), "error_message"));
-
+        // var dict = createDictionary(new File("C:\\Users\\emb\\Documents\\PIXPLAZE\\mc-srv\\dev\\minecraft-core-plugins\\PixplazeKeywordLib\\src\\main\\resources"));
+        // System.out.println(dict.get(Locale.US, "error_message"));
     }
 }

@@ -1,0 +1,4 @@
+name: PixplazeKeywordLib
+main: com.pixplaze.keyword.PixplazeKeywordLib
+version: 1.0.0-indev
+api-version: 1.18
