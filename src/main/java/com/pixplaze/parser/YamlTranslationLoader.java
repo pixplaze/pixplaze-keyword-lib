@@ -1,18 +1,17 @@
 package com.pixplaze.parser;
 
-import com.pixplaze.exceptions.parsing.IllegalLocaleFormatException;
-import com.pixplaze.exceptions.parsing.KeywordsNotSpecifiedException;
-import com.pixplaze.exceptions.parsing.LocaleNotSpecifiedException;
-import com.pixplaze.exceptions.parsing.TranslationNotSpecifiedException;
+import com.pixplaze.exceptions.parsing.*;
 import com.pixplaze.keyword.DefaultTranslation;
 import com.pixplaze.keyword.Translation;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class YamlParser implements TranslationParser<FileConfiguration> {
+public class YamlTranslationLoader implements TranslationLoader<FileConfiguration> {
 
     @Override
     public Translation parse(FileConfiguration yml) throws
@@ -27,19 +26,26 @@ public class YamlParser implements TranslationParser<FileConfiguration> {
         var language = translation.getString("locale");
         if (language == null) throw new LocaleNotSpecifiedException();
 
-        var keywords = translation.getConfigurationSection("keywords");
-        if (keywords == null) throw new KeywordsNotSpecifiedException();
-
         var locale = Locale.forLanguageTag(language);
         if (locale.toLanguageTag().equals("und")) throw new IllegalLocaleFormatException();
 
+        var keywords = translation.getConfigurationSection("keywords");
+        if (keywords == null) throw new KeywordsNotSpecifiedException();
 
         var map = keywords.getValues(true);
 
-        map.remove(language);
         var lang = map.entrySet().stream().collect(
                 Collectors.toMap(Map.Entry::getKey, e -> (String) e.getValue())
         );
         return new DefaultTranslation(locale, lang);
+    }
+
+    @Override
+    public FileConfiguration load(Object file) {
+        try {
+            return YamlConfiguration.loadConfiguration((File) file);
+        } catch (Exception e) {
+            throw new ParsingError();
+        }
     }
 }
