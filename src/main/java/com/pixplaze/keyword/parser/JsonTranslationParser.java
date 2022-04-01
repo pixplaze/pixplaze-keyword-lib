@@ -20,8 +20,8 @@ public class JsonTranslationParser implements TranslationParser<JsonObject> {
             TranslationNotSpecifiedException,
             LocaleNotSpecifiedException,
             KeywordsNotSpecifiedException,
-            IllegalLocaleFormatException {
-
+            IllegalLocaleFormatException
+    {
         var translation = parsing.getAsJsonObject("translation");
         if (translation == null) throw new TranslationNotSpecifiedException();
 
@@ -29,7 +29,7 @@ public class JsonTranslationParser implements TranslationParser<JsonObject> {
         if (language == null) throw new LocaleNotSpecifiedException();
 
         var locale = Locale.forLanguageTag(language);
-        if (locale.toLanguageTag().equals("und")) throw new IllegalLocaleFormatException();
+        if (locale.toLanguageTag().equals("und") || locale.getCountry().isEmpty()) throw new IllegalLocaleFormatException();
 
         var keywords = translation.getAsJsonObject("keywords");
         if (keywords == null) throw new KeywordsNotSpecifiedException();

@@ -18,8 +18,8 @@ public class YamlTranslationParser implements TranslationParser<FileConfiguratio
             TranslationNotSpecifiedException,
             LocaleNotSpecifiedException,
             KeywordsNotSpecifiedException,
-            IllegalLocaleFormatException {
-
+            IllegalLocaleFormatException
+    {
         var translation = yml.getConfigurationSection("translation");
         if (translation == null) throw new TranslationNotSpecifiedException();
 
@@ -27,7 +27,7 @@ public class YamlTranslationParser implements TranslationParser<FileConfiguratio
         if (language == null) throw new LocaleNotSpecifiedException();
 
         var locale = Locale.forLanguageTag(language);
-        if (locale.toLanguageTag().equals("und")) throw new IllegalLocaleFormatException();
+        if (locale.toLanguageTag().equals("und") || locale.getCountry().isEmpty()) throw new IllegalLocaleFormatException();
 
         var keywords = translation.getConfigurationSection("keywords");
         if (keywords == null) throw new KeywordsNotSpecifiedException();

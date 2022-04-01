@@ -6,4 +6,5 @@ import java.util.Locale;
 
 public interface Dictionary {
     String get(Locale locale, String keyword) throws LanguageNotSupportedException;
+    public Locale[] getLocales();
 }

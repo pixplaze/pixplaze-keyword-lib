@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class DefaultDictionary implements Dictionary {
     private final Set<Translation> translations;
+    private Locale[] locales;
 
     public DefaultDictionary(Set<Translation> translations) {
         this.translations = translations;
@@ -23,4 +24,18 @@ public class DefaultDictionary implements Dictionary {
         }
         throw new LanguageNotSupportedException(locale);
     }
+
+    @Override
+    public Locale[] getLocales() {
+        if (locales == null) {
+            locales = new Locale[translations.size()];
+            var iter = translations.iterator();
+            for (var i = 0; iter.hasNext(); i++) {
+                var item = iter.next();
+                locales[i] = item.locale();
+            }
+        }
+        return locales;
+    }
+
 }
