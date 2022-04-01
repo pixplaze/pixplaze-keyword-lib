@@ -3,7 +3,7 @@ package com.pixplaze.keyword.exceptions.parsing;
 public class ParsingError extends Error {
 
     public ParsingError() {
-        this("Unable to create translation dictionary!");
+        this("Could not parse translation sources!");
     }
 
     public ParsingError(String message) {

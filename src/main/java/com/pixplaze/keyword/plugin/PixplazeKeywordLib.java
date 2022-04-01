@@ -11,22 +11,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 public class PixplazeKeywordLib extends JavaPlugin {
 
-    public static Dictionary fromLanguageDirectory(File dir) throws ParsingError {
-        return fromLanguageDirectory(dir, "");
+    public static Dictionary fromLanguageDirectory(Locale defaultLocale, File dir) throws ParsingError {
+        return fromLanguageDirectory(defaultLocale, dir, "");
     }
 
-    public static Dictionary fromLanguageDirectory(File dir, String fileExtension) throws ParsingError {
-        return fromLanguageDirectory(DefaultDictionary.class, new YamlTranslationParser(), dir, fileExtension);
+    public static Dictionary fromLanguageDirectory(Locale defaultLocale, File dir, String fileExtension) throws ParsingError {
+        return fromLanguageDirectory(DefaultDictionary.class, new YamlTranslationParser(), defaultLocale, dir, fileExtension);
     }
 
     public static <R> Dictionary fromLanguageDirectory(
             Class<? extends Dictionary> dictionaryType,
-            TranslationParser<R> parser, File dir,
-            String fileExtension) throws ParsingError
+            TranslationParser<R> parser, Locale defaultLocale,
+            File dir, String fileExtension) throws ParsingError
     {
         var set = new HashSet<Translation>();
         if (dir != null && dir.isDirectory()) {
@@ -48,8 +49,8 @@ public class PixplazeKeywordLib extends JavaPlugin {
             }
         }
         try {
-            var constructor = dictionaryType.getConstructor(Set.class);
-            return constructor.newInstance(set);
+            var constructor = dictionaryType.getConstructor(Set.class, Locale.class);
+            return constructor.newInstance(set, defaultLocale);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new ParsingError("Could not load dictionary %s".formatted(dictionaryType.getCanonicalName()));
         }
