@@ -1,4 +1,4 @@
-package com.pixplaze.exceptions.parsing;
+package com.pixplaze.keyword.exceptions.parsing;
 
 import java.io.File;
 

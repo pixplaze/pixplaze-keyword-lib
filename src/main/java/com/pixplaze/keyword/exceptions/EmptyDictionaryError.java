@@ -1,6 +1,4 @@
-package com.pixplaze.exceptions;
-
-import com.pixplaze.exceptions.parsing.ParsingError;
+package com.pixplaze.keyword.exceptions;
 
 public class EmptyDictionaryError extends Error {
     public EmptyDictionaryError(String message) {

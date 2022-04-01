@@ -1,16 +1,15 @@
-package com.pixplaze.keyword;
+package com.pixplaze.keyword.plugin;
 
-import com.google.common.reflect.Reflection;
-import com.pixplaze.exceptions.parsing.ParsingError;
-import com.pixplaze.parser.TranslationLoader;
-import com.pixplaze.parser.YamlTranslationLoader;
+import com.pixplaze.keyword.DefaultDictionary;
+import com.pixplaze.keyword.Dictionary;
+import com.pixplaze.keyword.Translation;
+import com.pixplaze.keyword.exceptions.parsing.ParsingError;
+import com.pixplaze.keyword.parser.TranslationParser;
+import com.pixplaze.keyword.parser.YamlTranslationParser;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,16 +18,15 @@ public class PixplazeKeywordLib extends JavaPlugin {
         PixplazeKeywordLib.fromLanguageDirectory(new File(""));
     }
 
-
     public static Dictionary fromLanguageDirectory(File dir) throws ParsingError {
         return fromLanguageDirectory(dir, "");
     }
 
     public static Dictionary fromLanguageDirectory(File dir, String fileExtension) throws ParsingError {
-        return fromLanguageDirectory(DefaultDictionary.class, new YamlTranslationLoader(), dir, fileExtension);
+        return fromLanguageDirectory(DefaultDictionary.class, new YamlTranslationParser(), dir, fileExtension);
     }
 
-    public static <R> Dictionary fromLanguageDirectory(Class<? extends Dictionary> dictionaryType, TranslationLoader<R> parser, File dir, String fileExtension) throws ParsingError {
+    public static <R> Dictionary fromLanguageDirectory(Class<? extends Dictionary> dictionaryType, TranslationParser<R> parser, File dir, String fileExtension) throws ParsingError {
         var set = new HashSet<Translation>();
         if (dir != null && dir.isDirectory()) {
             var files = dir.listFiles(file -> file.getName().endsWith(fileExtension));

@@ -1,4 +1,4 @@
-package com.pixplaze.exceptions;
+package com.pixplaze.keyword.exceptions;
 
 import java.util.Locale;
 

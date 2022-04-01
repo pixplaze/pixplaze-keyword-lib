@@ -1,4 +1,4 @@
-package com.pixplaze.exceptions.parsing;
+package com.pixplaze.keyword.exceptions.parsing;
 
 public class LocaleNotSpecifiedException extends ParsingException {
     public LocaleNotSpecifiedException() {

@@ -6,7 +6,7 @@
 
     <groupId>com.pixplaze.lib</groupId>
     <artifactId>PixplazeKeywordLib</artifactId>
-    <version>1.0.0-indev</version>
+    <version>0.1.28-indev</version>
     <packaging>jar</packaging>
 
     <properties>

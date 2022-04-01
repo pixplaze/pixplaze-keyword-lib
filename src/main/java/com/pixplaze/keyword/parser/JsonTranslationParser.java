@@ -1,51 +1,53 @@
-package com.pixplaze.parser;
+package com.pixplaze.keyword.parser;
 
-import com.pixplaze.exceptions.parsing.*;
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.pixplaze.keyword.DefaultTranslation;
 import com.pixplaze.keyword.Translation;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import com.pixplaze.keyword.exceptions.parsing.*;
 
 import java.io.File;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class YamlTranslationLoader implements TranslationLoader<FileConfiguration> {
+public class JsonTranslationParser implements TranslationParser<JsonObject> {
 
     @Override
-    public Translation parse(FileConfiguration yml) throws
+    public Translation parse(JsonObject parsing) throws
             TranslationNotSpecifiedException,
             LocaleNotSpecifiedException,
             KeywordsNotSpecifiedException,
             IllegalLocaleFormatException {
 
-        var translation = yml.getConfigurationSection("translation");
+        var translation = parsing.getAsJsonObject("translation");
         if (translation == null) throw new TranslationNotSpecifiedException();
 
-        var language = translation.getString("locale");
+        var language = translation.get("locale").getAsString();
         if (language == null) throw new LocaleNotSpecifiedException();
 
         var locale = Locale.forLanguageTag(language);
         if (locale.toLanguageTag().equals("und")) throw new IllegalLocaleFormatException();
 
-        var keywords = translation.getConfigurationSection("keywords");
+        var keywords = translation.getAsJsonObject("keywords");
         if (keywords == null) throw new KeywordsNotSpecifiedException();
 
-        var map = keywords.getValues(true);
-
-        var lang = map.entrySet().stream().collect(
-                Collectors.toMap(Map.Entry::getKey, e -> (String) e.getValue())
+        var lang = keywords.entrySet().stream().collect(
+                Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getAsString())
         );
         return new DefaultTranslation(locale, lang);
     }
 
     @Override
-    public FileConfiguration load(Object file) {
+    public <T> JsonObject load(T file) {
         try {
-            return YamlConfiguration.loadConfiguration((File) file);
+            return JsonParser.parseString(Files.asCharSource((File) file, Charsets.UTF_8).read()).getAsJsonObject();
         } catch (Exception e) {
             throw new ParsingError();
         }
     }
+
+
 }

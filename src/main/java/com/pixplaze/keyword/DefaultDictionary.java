@@ -1,7 +1,7 @@
 package com.pixplaze.keyword;
 
-import com.pixplaze.exceptions.LanguageNotSupportedException;
-import com.pixplaze.exceptions.EmptyDictionaryError;
+import com.pixplaze.keyword.exceptions.LanguageNotSupportedException;
+import com.pixplaze.keyword.exceptions.EmptyDictionaryError;
 
 import java.util.Locale;
 import java.util.Set;

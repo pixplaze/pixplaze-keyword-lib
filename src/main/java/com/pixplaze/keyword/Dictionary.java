@@ -1,6 +1,6 @@
 package com.pixplaze.keyword;
 
-import com.pixplaze.exceptions.LanguageNotSupportedException;
+import com.pixplaze.keyword.exceptions.LanguageNotSupportedException;
 
 import java.util.Locale;
 
