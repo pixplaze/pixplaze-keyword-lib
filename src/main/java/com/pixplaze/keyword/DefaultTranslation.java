@@ -1,5 +1,7 @@
 package com.pixplaze.keyword;
 
+import com.pixplaze.keyword.exceptions.NoKeywordDefinedException;
+
 import java.util.Locale;
 import java.util.Map;
 
@@ -20,7 +22,9 @@ public class DefaultTranslation implements Translation {
 
     @Override
     public String get(String keyword) {
-        return this.translation.get(keyword);
+        var value = this.translation.get(keyword);
+        if (value == null) throw new NoKeywordDefinedException(this.locale, keyword);
+        return value;
     }
 
 
